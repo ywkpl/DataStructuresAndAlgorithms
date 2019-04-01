@@ -11,7 +11,7 @@ class Node:
 class SingleLinkedList:
     def __init__(self):
         self.head=None
-    
+        self.__pri="test"
     def insert_value_to_head(self, value:object):
         newNode=Node(value)
         newNode.next=self.head
@@ -29,14 +29,14 @@ class SingleLinkedList:
 
     def find_by_value(self, value:object)->Optional[Node]:
         p=self.head
-        while p and not p.data.__eq__(value)
+        while p and not p.data.__eq__(value):
             p=p.next
         return p
 
     def find_by_index(self, index:int)->Optional[Node]:
         p=self.head
         position=0
-        while p and position!=index
+        while p and position!=index:
             position+=1
             p=p.next
         return p
@@ -54,10 +54,11 @@ def test_singleLinkedList():
     link.insert_value_to_head(34)
     link.insert_value_to_head(24)
     link.print_all()
-    assert link.len()==2
+    assert link.len()==3
 
     findNode=link.find_by_value(24)
-    assert link.find_by_value().data==24
+    assert link.find_by_value(24).data==24
+    assert link.__pri=="test"
 
 if __name__=="__main__":
     test_singleLinkedList()
