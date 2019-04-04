@@ -35,6 +35,18 @@ class SingleLinkedList:
             prev._next=newNode
             self.__len+=1
 
+    def insert_value_after(self, value:int, searchValue:int):
+        cur=self._head
+        while cur and cur.data!=searchValue:
+            cur=cur._next
+
+        if cur:
+            newNode=Node(value)
+            if cur._next:
+                newNode._next=cur._next
+            cur._next=newNode
+            self.__len+=1
+
     def delete_by_value_1(self, value:int):
         if not self._head or not value:
             return
@@ -121,6 +133,11 @@ def test_singleLinkedList():
     link.insert_value_before(88, 24)
     link.insert_value_before(77, 56)
     link.insert_value_before(1, 88)
+    
+
+    link.insert_value_after(45, 77)
+    link.insert_value_after(40, 56)
+    link.insert_value_after(100, 24)
     link.print_all()
 
 if __name__=="__main__":
