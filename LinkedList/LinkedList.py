@@ -8,15 +8,35 @@ class Node:
 class SingleLinkedList:
     def __init__(self):
         self._head=None
+        self.__len=0
 
     def insert_node_to_head(self, node:Node):
         node._next=self._head
         self._head=node
+        self.__len+=1
 
     def insert_value_to_head(self, value:int):
         newNode=Node(value)
         self.insert_node_to_head(newNode)
-    
+
+    def insert_value_before(self, value:int, searchValue:int):
+        newNode=Node(value)
+        cur, prev=self._head, None
+        while cur and cur.data!=searchValue:
+            prev=cur
+            cur=cur._next
+        
+        if not prev and cur:
+            newNode._next=cur
+            self._head=newNode
+            self.__len+=1
+            return
+
+        if cur:
+            newNode._next=cur
+            prev._next=newNode
+            self.__len+=1
+
     def delete_by_value_1(self, value:int):
         if not self._head or not value:
             return
@@ -26,9 +46,18 @@ class SingleLinkedList:
             prev=cur
             cur=cur._next
 
-        prev._next=cur._next
-        cur=None
+        if prev and prev._next:
+            prev._next=cur._next
 
+        if not prev:
+            self._head=self._head._next if self._head._next else None
+        
+        if cur:
+            cur=None
+            self.__len-=1
+            
+    def len(self)->int:
+        return self.__len
 
     def delete_by_value(self, value:int):
         if not self._head or not value:
@@ -76,28 +105,24 @@ class SingleLinkedList:
             p=p._next
         return p
 
-
-    def len(self)->int:
-        i=0
-        for item in self:
-            i+=1
-        return i
-
 def test_singleLinkedList():
     link=SingleLinkedList()
-    link.insert_value_to_head(12)
-    link.insert_value_to_head(34)
     link.insert_value_to_head(24)
     link.insert_node_to_head(Node(33))
-    assert link.len()==4
+    link.insert_value_to_head(56)
+    assert link.len()==3
 
     findNode=link.find_by_value(24)
-    assert findNode.data==24
+    assert findNode is not None
 
     findNode=link.find_by_index(2)
-    assert findNode.data==34
-   
-    link.delete_by_value_1(24)
+    assert findNode.data==24
+
+    link.delete_by_value_1(33)
+
+    link.insert_value_before(88, 24)
+    link.insert_value_before(77, 56)
+    link.insert_value_before(1, 88)
     link.print_all()
 
 if __name__=="__main__":
