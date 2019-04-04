@@ -20,18 +20,16 @@ class SingleLinkedList:
         self.insert_node_to_head(newNode)
 
     def insert_value_before(self, value:int, searchValue:int):
+        if self._head.data==searchValue:
+            self.insert_value_to_head(value)
+            return
+
         newNode=Node(value)
-        cur, prev=self._head, None
+        cur, prev=self._head._next, self._head
         while cur and cur.data!=searchValue:
             prev=cur
             cur=cur._next
         
-        if not prev and cur:
-            newNode._next=cur
-            self._head=newNode
-            self.__len+=1
-            return
-
         if cur:
             newNode._next=cur
             prev._next=newNode
