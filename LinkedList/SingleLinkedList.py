@@ -98,6 +98,33 @@ class SingleLinkedList:
             p=p._next
         return p
 
+    #另建链表方式
+    def reverse(self):
+        if not self._head:
+            return
+        
+        virtualHead, cur, remove=None, self._head, None
+        while cur:
+            remove=cur
+            cur=cur._next
+            #搬移
+            remove._next=virtualHead
+            virtualHead=remove
+
+        self._head=virtualHead
+
+    #交换方式
+    def reverse1(self):
+        return
+
+    #转换到指定节点
+    def reverse_until_node(self, node:Node):
+        return
+
+    #回文判断
+    def IsPalindromic(self):
+        return
+
 def test_singleLinkedList():
     link=SingleLinkedList()
     link.insert_value_to_head(24)
@@ -111,7 +138,7 @@ def test_singleLinkedList():
     findNode=link.find_by_index(2)
     assert findNode.data==24
 
-    link.delete_by_value_1(33)
+    link.delete_by_value(33)
 
     link.insert_value_before(88, 24)
     link.insert_value_before(77, 56)
@@ -123,6 +150,9 @@ def test_singleLinkedList():
     link.insert_value_after(100, 24)
     link.print_all()
 
+    print('反转链表')
+    link.reverse()
+    link.print_all()
 if __name__=="__main__":
     test_singleLinkedList()
     
