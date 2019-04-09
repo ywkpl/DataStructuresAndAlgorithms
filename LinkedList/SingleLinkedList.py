@@ -113,17 +113,73 @@ class SingleLinkedList:
 
         self._head=virtualHead
 
-    #交换方式
-    def reverse1(self):
-        return
+    #交换方式[原地交換,head指針不新建]
+    def reverse_location_change(self):
+        if not self._head or not self._head._next:
+            return
+        prev, next=self._head, self._head._next
+        while next:
+            prev._next=next._next
+            next._next=self._head
+            self._head=next
+            next=prev._next
+        
 
-    #转换到指定节点
+    #反转到指定节点
     def reverse_until_node(self, node:Node):
-        return
+        if not self._head or not self._head._next or self._head==node:
+            return
+        
+        prev, next=self._head, self._head._next
+        while next and next!=node:
+            prev._next=next._next
+            next._next=self._head
+            self._head=next
+            next=prev._next
+
+    #查找中间节点长度法
+    def find_middle_node_length(self)->Optional[Node]:
+        if not self._head or self.__len==1:
+            return self._head
+        middleIndex=(self.__len-1)//2
+        return self.find_by_index(middleIndex)
+
+    #查找中间节点    
+    def find_middle_node(self)->Optional[Node]:
+        if not self._head:
+            return self._head
+
+        p,q=self._head, self._head
+        while q._next and q._next._next:
+            p=p._next
+            q=q._next._next
+
+        return p
 
     #回文判断
-    def IsPalindromic(self):
-        return
+    def IsPalindromic(self)->bool:
+        if not self._head:return False
+        if not self._head._next:return True
+        
+        #查找中间节点
+        p,q=self._head, self._head
+        while q._next and q._next._next:
+            p=p._next
+            q=q._next._next
+        
+        #q._next=null 为奇数，p位于中间位置，否则为偶数，下移一位
+        reverseNode=p if not q._next else p._next
+        q=p._next
+        #反转至reverseNode节点
+        self.reverse_until_node(reverseNode)
+        p=self._head
+        while q:
+            if p.data!=q.data:
+                return False
+            p=p._next
+            q=q._next
+
+        return True
 
 def test_singleLinkedList():
     link=SingleLinkedList()
@@ -144,15 +200,48 @@ def test_singleLinkedList():
     link.insert_value_before(77, 56)
     link.insert_value_before(1, 88)
     
-
     link.insert_value_after(45, 77)
     link.insert_value_after(40, 56)
     link.insert_value_after(100, 24)
+    link.insert_value_after(5, 24)
+    link.insert_value_after(456, 24)
     link.print_all()
+
 
     print('反转链表')
     link.reverse()
     link.print_all()
+
+    print('另一种反转:')
+    link.reverse_location_change()
+    link.print_all()
+
+    findNode=link.find_by_value(456)
+    print('反转到结点:'+str(findNode.data))
+    link.reverse_until_node(findNode)
+    link.print_all()
+
+    print('查找中间节点：')
+    findNode=link.find_middle_node()
+    print(findNode.data)
+
+    print('查找中间节点长度法：')
+    findNode=link.find_middle_node_length()
+    print(findNode.data)
+
+    print('新建回文链表：')
+    linkPalindromic=SingleLinkedList()
+    linkPalindromic.insert_value_to_head(5)
+    linkPalindromic.insert_value_to_head(4)
+    linkPalindromic.insert_value_to_head(3)
+    linkPalindromic.insert_value_to_head(3)
+    linkPalindromic.insert_value_to_head(4)
+    linkPalindromic.insert_value_to_head(5)
+
+    linkPalindromic.print_all()
+    isPalindromic= linkPalindromic.IsPalindromic()
+    print('判断回文结果：'+str(isPalindromic))
+
 if __name__=="__main__":
     test_singleLinkedList()
     
