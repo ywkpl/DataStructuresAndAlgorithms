@@ -181,6 +181,44 @@ class SingleLinkedList:
 
         return True
 
+    def LRUCache(self, value:int):
+        cacheNode=Node(value)
+        if not self._head:
+            self._head=cacheNode
+            return
+
+        if self._head.data==value:
+            return
+        
+        cur,prev=self._head,None
+        #遍曆現有鏈表
+        while cur and cur.data!=value:
+            prev=cur
+            cur=cur._next
+            
+        #在鏈表中    
+        if cur:
+            prev._next=cur._next
+            cur._next=self._head
+            self._head=cur
+            return
+
+        #統計數量[可用len]
+        i=1
+        cur,prev=self._head,None
+        while cur and cur._next:
+            i+=1
+            prev=cur
+            cur=cur._next
+
+        #鏈表滿
+        if i==5:
+            prev._next=None
+            self.__len-=1
+        
+        cacheNode._next=self._head
+        self._head=cacheNode
+
 def test_singleLinkedList():
     link=SingleLinkedList()
     link.insert_value_to_head(24)
@@ -242,6 +280,29 @@ def test_singleLinkedList():
     isPalindromic= linkPalindromic.IsPalindromic()
     print('判断回文结果：'+str(isPalindromic))
 
+    print('新建LRU(最近最少使用策略)链表,依次緩存3,4, 5, 10, 10, 9：')
+    LRULink=SingleLinkedList()
+    LRULink.LRUCache(3)
+    LRULink.LRUCache(4)
+    LRULink.LRUCache(5)
+    LRULink.LRUCache(10)
+    LRULink.LRUCache(10)
+    LRULink.LRUCache(9)
+
+    LRULink.print_all()
+    print('缓存：'+str(8))
+    LRULink.LRUCache(8)
+    LRULink.print_all()
+    print('缓存：'+str(10))
+    LRULink.LRUCache(10)
+    LRULink.print_all()
+    print('缓存：'+str(3))
+    LRULink.LRUCache(3)
+    LRULink.print_all()
+    print('缓存：'+str(7))
+    LRULink.LRUCache(7)
+
+    LRULink.print_all()
 if __name__=="__main__":
     test_singleLinkedList()
     
