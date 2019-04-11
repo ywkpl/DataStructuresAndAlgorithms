@@ -40,17 +40,20 @@ class LinkedStack(Generic[T]):
     def is_full(self)->bool:
         return self._len==self._capacity
 
-    def pop(self):
+    def pop(self)->T:
         if self.is_empty():
             return
         
         if not self._head._next:
+            val= self._head.data
             self._head=None
             self._len-=1
-            return
+            return val
         
+        val= self._head.data
         self._head=self._head._next
         self._len-=1
+        return val
 
     def len(self):
         return self._len
@@ -76,13 +79,18 @@ def test_LinkedStack():
 
     stack.print_all()
     print('满栈测试')
-    stack.pop()
-    stack.pop()
-    stack.pop()
+    val=stack.pop()
+    print('出栈:'+str(val))
+    val=stack.pop()
+    print('出栈:'+str(val))
+    val=stack.pop()
+    print('出栈:'+str(val))
     print('出栈三次后：')
     stack.print_all()
-    stack.pop()
-    stack.pop()
+    val=stack.pop()
+    print('出栈:'+str(val))
+    val=stack.pop()
+    print('出栈:'+str(val))
     print('空栈测试')
     stack.pop()
     stack.print_all()
