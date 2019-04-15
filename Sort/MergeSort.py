@@ -8,13 +8,13 @@ class MergeSort:
 
     def _insert_values(self, capacity:int):
         for x in range(capacity):
-            self._arr.append(random.randrange(1,100000, 2))
+            self._arr.append(random.randrange(1,1000000, 2))
 
     def print_all(self):
         print(self._arr)
 
     def sort_split(self, start:int, end:int):
-        if start==end: return
+        if start>=end: return
 
         splitIndex=(start+end)//2
         self.sort_split(start, splitIndex)
@@ -58,7 +58,7 @@ class MergeSort:
 
 def test_MergeSort():
     print('初始化')
-    sort=MergeSort(100000)
+    sort=MergeSort(1000000)
     #sort.print_all()
     print('排序')
     sort.sort()
