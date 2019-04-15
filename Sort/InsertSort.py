@@ -34,7 +34,7 @@ class InsertSort:
 
 def test_InsertSort():
     print('初始化')
-    sort=InsertSort(20000)
+    sort=InsertSort(100000)
     #sort.print_all()
     print('排序')
     sort.sort()
