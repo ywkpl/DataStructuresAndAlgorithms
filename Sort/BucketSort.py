@@ -1,77 +1,105 @@
 #桶排序,线性排序
-import random,time
+import random,time,math,numpy
 
-class MergeSort:
-    def __init__(self, capacity:int, step:int):
+class BucketSort:
+    def __init__(self, capacity:int):
         self._arr=[]
-        self._setp=step
-        self._buckets
+        self._min=0
+        self._max=0
+        self._buckets=100
+        self._step=0
         self._insert_values(capacity)
+        self.set_values()
+        self._bucket=[]
+        self._ordered=[]
 
-    def _insert_values(self, capacity:int):
-        for x in range(capacity):
-            self._arr.append(random.randrange(1,1000000, 2))
+    def set_values(self):
+        self._min, self._max=self._arr[0], self._arr[0]
+        i=1
+        while i<len(self._arr):
+            if self._arr[i]<self._min:
+                self._min=self._arr[i]
+            if self._arr[i]>self._max:
+                self._max=self._arr[i]
+            i+=1
+        self._step=math.ceil((self._max-self._min+1)/self._buckets) 
+        
+    def split_bucket(self, bucketIndex:int):
+        if bucketIndex<1: return
+        self.split_bucket(bucketIndex-1)
+        minval=self._min+(bucketIndex-1)*self._step
+        maxval=self._min+bucketIndex*self._step
+        self._bucket=[]
+        i=0
+        while i<len(self._arr):
+            if self._arr[i]>=minval and self._arr[i]<maxval:
+                self._bucket.append(self._arr[i])
+                #移除已加入桶數量，因為python二維數組未掌握而加入的效率方式
+                self._arr.pop(i)
+                continue
+            i+=1
+        
+        #對桶進行快排
+        self.quick_sort_bucket()
+        
+        #加入最終數組
+        self._ordered=numpy.append(self._ordered, self._bucket)
 
-    def print_all(self):
-        print(self._arr)
+    def quick_sort_bucket(self):
+        self.sort_split(0, len(self._bucket)-1)
 
     def sort_split(self, start:int, end:int):
         if start>=end: return
 
-        splitIndex=(start+end)//2
-        self.sort_split(start, splitIndex)
+        splitIndex=self.partition(start, end)
+        self.sort_split(start, splitIndex-1)
         self.sort_split(splitIndex+1, end)
 
-        self.merge_sort(start, splitIndex, end)
+    def switch(self, i, j):
+        temp=self._bucket[i]
+        self._bucket[i]=self._bucket[j]
+        self._bucket[j]=temp
 
-    def merge_sort(self, left:int, mid:int, right:int):
-        marge=[]
-        i,j=left,mid+1
-        
-        #比较搬移
-        while i<=mid and j<=right:
-            if(self._arr[i]<=self._arr[j]):
-                marge.append(self._arr[i])
+    def partition(self, start:int, end:int)->int:
+        pivot=self._bucket[end]
+        i, j=start,start
+        while j<end:
+            if self._bucket[j]<pivot:
+                self.switch(i, j)
                 i+=1
-            else:
-                marge.append(self._arr[j])
-                j+=1
-        
-        #搬移剩余数据        
-        while i<=mid:
-            marge.append(self._arr[i])
-            i+=1
-
-        while j<=right:
-            marge.append(self._arr[j])
             j+=1
+        self.switch(i, j)
+        return i
 
-        #复制
-        i=0
-        while i<len(marge):
-            self._arr[left+i]=marge[i]
-            i+=1    
+    def _insert_values(self, capacity:int):
+        for x in range(capacity):
+            self._arr.append(random.randrange(1,10000, 2))
+
+    def print_all(self):
+        print(self._arr)
+
+    def print_ordered(self):
+        print(self._ordered)
 
     def sort(self):
         start=time.time()
-        self.sort_split(0, len(self._arr)-1)
+        # i=1
+        # while i<=self._buckets:
+        #     self.split_bucket(i)
+        #     i+=1
+        self.split_bucket(self._buckets)
         end=time.time()
         print(end-start)
 
-def test_MergeSort():
+def test_BucketSort():
     print('初始化')
-    sort=MergeSort(1000000)
+    sort=BucketSort(1000000)
     #sort.print_all()
     print('排序')
     sort.sort()
-    #sort.print_all()
+    #sort.print_ordered()
 
 if __name__=="__main__":
-    test = [[0 for i in range(2)] for j in range(3)]
-    print(test)
-
-    test[2][1]=88
-    test[0][1]=79
-    print(test)
+    test_BucketSort()
 
 
