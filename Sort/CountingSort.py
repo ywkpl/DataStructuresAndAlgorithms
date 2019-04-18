@@ -9,7 +9,7 @@ class CountingSort:
         
     def _insert_values(self, capacity:int):
         for x in range(capacity):
-            self._arr.append(random.randrange(1,1000, 2))
+            self._arr.append(random.randint(1,1000))
 
     def print_all(self):
         print(self._arr)

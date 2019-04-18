@@ -8,7 +8,7 @@ class QuickSort:
 
     def _insert_values(self, capacity:int):
         for x in range(capacity):
-            self._arr.append(random.randrange(1,1000000, 2))
+            self._arr.append(random.randint(1,1000))
 
     def print_all(self):
         print(self._arr)
@@ -44,7 +44,7 @@ class QuickSort:
 
 def test_QuickSort():
     print('初始化')
-    sort=QuickSort(1000000)
+    sort=QuickSort(100000)
     #sort.print_all()
     print('排序')
     sort.sort()
