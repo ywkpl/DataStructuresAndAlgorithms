@@ -73,7 +73,7 @@ class BucketSort:
 
     def _insert_values(self, capacity:int):
         for x in range(capacity):
-            self._arr.append(random.randrange(1,10000, 2))
+            self._arr.append(random.randrange(1,500, 2))
 
     def print_all(self):
         print(self._arr)
@@ -93,7 +93,7 @@ class BucketSort:
 
 def test_BucketSort():
     print('初始化')
-    sort=BucketSort(1000000)
+    sort=BucketSort(100000)
     #sort.print_all()
     print('排序')
     sort.sort()
