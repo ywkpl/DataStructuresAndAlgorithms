@@ -12,9 +12,10 @@ class BinaryTree:
     
     def print_all(self):
         p=self.head
-        self.previous_order(p)
+        #前序遍历
+        #self.previous_order(p)
         #中序遍历
-        #self.middle_order(p)
+        self.middle_order(p)
         #后序遍历
         #self.next_order(p)
 
