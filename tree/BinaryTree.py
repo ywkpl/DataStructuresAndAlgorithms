@@ -89,6 +89,41 @@ class BinaryTree:
             p=p.right
         return p
 
+    def delete(self, data:int):
+        p=self.head
+        #查找删除节点
+        prevNode=None
+        while p and p.data!=data:
+            prevNode=p
+            if p.data<data:
+                p=p.right
+            else:
+                p=p.left
+        
+        if not p:return
+        
+        #删除两个节点
+        if p.left and p.right:
+            minp=p.right
+            minpParent=p #最小右节点父节点
+            #查找最小节点
+            while minp.left:
+                minpParent=minp
+                minp=minp.left
+            p.data=minp.data
+            p=minp              #用后绪删除代码进行删除
+            prevNode=minpParent
+
+            #删除节点是叶子节点或仅有一个节点
+            child=None
+            if p.left:child=p.left
+            elif p.right:child=p.right
+            else:child=None
+            
+            if not prevNode:self.head=child #删除的是根结点
+            elif prevNode.left==p:prevNode.left=child   #删除左节点
+            else:prevNode.right=child #删除右节点
+
 def test_BinaryTree():
     print('初始化')
     binaryTree=BinaryTree()
@@ -110,6 +145,10 @@ def test_BinaryTree():
 
     node=binaryTree.find_max()
     print('最大值：'+str(node.data) if node else '未找到')
+
+    print('删除节点:'+str(8))
+    binaryTree.delete(8)
+    binaryTree.print_all()
 
 def print_find(binaryTree:BinaryTree, data:int):
     findNode=binaryTree.find(data)
