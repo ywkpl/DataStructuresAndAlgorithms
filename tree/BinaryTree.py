@@ -115,15 +115,15 @@ class BinaryTree:
             p=minp              #用后绪删除代码进行删除
             prevNode=minpParent
 
-            #删除节点是叶子节点或仅有一个节点
-            child=None
-            if p.left:child=p.left
-            elif p.right:child=p.right
-            else:child=None
-            
-            if not prevNode:self.head=child #删除的是根结点
-            elif prevNode.left==p:prevNode.left=child   #删除左节点
-            else:prevNode.right=child #删除右节点
+        #删除节点是叶子节点或仅有一个节点
+        child=None
+        if p.left:child=p.left
+        elif p.right:child=p.right
+        else:child=None
+        
+        if not prevNode:self.head=child #删除的是根结点
+        elif prevNode.left==p:prevNode.left=child   #删除左节点
+        else:prevNode.right=child #删除右节点
 
 def test_BinaryTree():
     print('初始化')

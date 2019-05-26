@@ -58,7 +58,7 @@ class MergeSort:
 
 def test_MergeSort():
     print('初始化')
-    sort=MergeSort(1000000)
+    sort=MergeSort(10000000)
     #sort.print_all()
     print('排序')
     sort.sort()
