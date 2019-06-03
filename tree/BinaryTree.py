@@ -63,7 +63,10 @@ class BinaryTree:
                 p=p.left
 
             if data==p.data:
-                return    
+                if not p.right:
+                    p.right=Node(data) 
+                    return
+                p=p.right
 
     def find(self, data:int)->Node:
         p=self.head
@@ -94,12 +97,36 @@ class BinaryTree:
         p=self.head
         #查找删除节点
         prevNode=None
-        while p and p.data!=data:
+        while p:
             prevNode=p
             if p.data<data:
                 p=p.right
-            else:
+            elif p.data>data:
                 p=p.left
+            else:
+                #值相等
+                #删除两个节点
+                if p.left and p.right:
+                    minp=p.right
+                    minpParent=p #最小右节点父节点
+                    #查找最小节点
+                    while minp.left:
+                        minpParent=minp
+                        minp=minp.left
+                    p.data=minp.data
+                    p=minp              #用后绪删除代码进行删除
+                    prevNode=minpParent
+
+                #删除节点是叶子节点或仅有一个节点
+                child=None
+                if p.left:child=p.left
+                elif p.right:child=p.right
+                else:child=None
+                
+                if not prevNode:self.head=child #删除的是根结点
+                elif prevNode.left==p:prevNode.left=child   #删除左节点
+                else:prevNode.right=child #删除右节点
+
         
         if not p:return
         
@@ -124,6 +151,20 @@ class BinaryTree:
         if not prevNode:self.head=child #删除的是根结点
         elif prevNode.left==p:prevNode.left=child   #删除左节点
         else:prevNode.right=child #删除右节点
+
+def test_BinaryTree1():
+    print('初始化')
+    binaryTree=BinaryTree()
+    binaryTree.insert(13)
+    binaryTree.insert(8)
+    binaryTree.insert(18)
+    binaryTree.insert(6)
+    binaryTree.insert(10)
+    binaryTree.insert(16)
+    binaryTree.insert(18)
+    binaryTree.print_all()
+
+
 
 def test_BinaryTree():
     print('初始化')
@@ -158,4 +199,4 @@ def print_find(binaryTree:BinaryTree, data:int):
     print(printStr)
 
 if __name__=="__main__":
-    test_BinaryTree()
+    test_BinaryTree1()
