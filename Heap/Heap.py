@@ -19,11 +19,15 @@ class Heap:
 
         self._arr.append(data)
         self._count+=1
-        i=self._count
+        #堆化
+        self.__heapify(self._count)
+        
+    
+    def __heapify(self, i:int):
         while i//2>0 and self._arr[i]>self._arr[i//2]:
             self._swap(i, i//2)
             i=i//2
-    
+
     def _swap(self, i, j):
         temp=self._arr[j]
         self._arr[j]=self._arr[i]
@@ -35,36 +39,36 @@ class Heap:
         
         self._arr[1]=self._arr[self._count]
         self._arr.pop(self._count)
-        self._count-=1
+        self._count=self._count-1
 
         i=1
-        while True:
-            maxPos=i
-            if i*2<=self._count and self._arr[i]<self._arr[i*2]:
-                maxPos=i*2
-            
-            if i*2+1<=self._count and self._arr[i]<self._arr[i*2+1]:
-                if self._arr[i*2+1]>self._arr[i*2]:
+        #拥有左子树
+        while i*2<=self._count:
+            maxPos=i*2
+            #拥有右子树
+            if i*2+1<=self._count:
+                if self._arr[i*2]<self._arr[i*2+1]:
                     maxPos=i*2+1
-                
-            if i==maxPos:
+            #子树最大节点值大于父节点值，交换
+            if self._arr[maxPos]>self._arr[i]:
+                self._swap(maxPos, i)
+                i=maxPos
+            else:
                 break
-            
-            self._swap(i, maxPos)
 
     def print_all(self):
         print(self._arr)
 
 def test_Heap():
     print('初始化')
-    sort=Heap(10)
+    sort=Heap(1000)
     sort.print_all()
     i=0
     while i<5:
         sort.delete()
         sort.print_all()
         i+=1
-    sort.print_all()
+
     #print('排序')
     #sort.sort()
     #sort.print_ordered()
